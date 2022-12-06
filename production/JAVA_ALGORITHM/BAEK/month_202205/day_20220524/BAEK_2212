@@ -1,0 +1,50 @@
+package BAEK.month_202205.day_20220523;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.OptionalInt;
+import java.util.StringTokenizer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+public class BAEK_2212 {
+	static int N,K;
+	static int[] arr;
+	static Integer[] diff;
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		N=Integer.parseInt(br.readLine());
+		K=Integer.parseInt(br.readLine());
+		arr=new int[N];
+		diff=new Integer[N-1];
+		StringTokenizer st=new StringTokenizer(br.readLine()," ");
+		for(int i=0; i<N; i++) {
+			arr[i]=Integer.parseInt(st.nextToken());
+		}
+		
+		if(K>=N) {
+			System.out.println("0");
+			System.exit(0);
+		}
+		
+		int[] array = Arrays.stream(arr).sorted().toArray();
+//		System.out.println(Arrays.toString(array));
+		for(int i=N-1,j=0; i>=1; i--,j++) {
+			diff[j]=array[i]-array[i-1];
+		}
+		Arrays.sort(diff,Collections.reverseOrder());
+		
+		int sum=0;
+		for(int i=K-1; i<diff.length; i++) {
+			sum+=diff[i];
+		}
+		System.out.println(sum);
+		
+		
+		
+	}
+
+}
