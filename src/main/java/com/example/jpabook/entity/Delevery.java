@@ -5,6 +5,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Data
 public class Delevery {
@@ -12,7 +14,8 @@ public class Delevery {
     @Column(name="DELEVERY_ID")
     private Long id;
 
-    @OneToOne(mappedBy = "delevery")
+
+    @OneToOne(mappedBy = "delevery", fetch = LAZY)
     private Order order;
 
     @Embedded
