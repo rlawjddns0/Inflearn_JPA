@@ -1,6 +1,7 @@
 package com.example.jpabook.entity.item;
 
 import com.example.jpabook.entity.Category;
+import com.example.jpabook.exception.NotEnoughStockException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,21 @@ public abstract class Item {
     private int price;
     private int stockQuantity;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
+
+    //===비즈니스 로직 ===//
+    //Setter를 가지고 변경하는것이 아니고 비즈니스 로직을 만들어서 변경해야 된다. -> 제일 객체지향적인 방법
+    public void addStock(int quantity){
+        this.stockQuantity += quantity;
+    }
+
+    public void removeStock(int quantity){
+        int restStock=this.stockQuantity-quantity;
+        if(restStock<0){
+            throw new NotEnoughStockException("nedd more stock");
+        }
+        this.stockQuantity=restStock;
+    }
+
 }

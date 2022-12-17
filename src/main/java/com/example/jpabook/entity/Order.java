@@ -1,6 +1,9 @@
 package com.example.jpabook.entity;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Array;
@@ -13,6 +16,8 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Table(name="orders")
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Order {
 
 
@@ -51,6 +56,39 @@ public class Order {
     public void setDelivery(Delevery delivery){
         this.delevery=delivery;
         delevery.setOrder(this);
+    }
+
+    //==생성 메서드==//
+    public static Order createOrder(Member member, Delevery delevery, OrderItem... orderItems){
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelevery(delevery);
+        for (OrderItem orderItem :orderItems) {
+            order.addOrderItem(orderItem);
+        }
+        order.setStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    //==비즈니스 로직==//
+    /** 주문 취소 **/
+    public void cancel(){
+        if(delevery.getStatus()==DeliverStatus.COMP){
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        }
+
+        this.setStatus(OrderStatus.CANCEL);
+        for (OrderItem orderItem:orderItems) {
+            orderItem.cancel();
+        }
+    }
+
+    /*
+    전체 주문가격 조회로직
+     */
+    public int getTotalPrice(){
+        return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
     }
 
 }
