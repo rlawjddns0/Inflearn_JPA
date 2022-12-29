@@ -8,6 +8,7 @@ import com.example.jpabook.entity.item.Item;
 import com.example.jpabook.repository.ItemRepository;
 import com.example.jpabook.repository.MemberRepository;
 import com.example.jpabook.repository.OrderRepository;
+import com.example.jpabook.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +23,16 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
-    /** 주문 **/
+
+    /**
+     * 주문
+     **/
     @Transactional
-    public Long Order(Long memberId, Long itemId, int count){
+    public Long Order(Long memberId, Long itemId, int count) {
         Member member = memberRepository.find(memberId);
         Item item = itemRepository.findOne(itemId);
 
-        Delevery delivery=new Delevery();
+        Delevery delivery = new Delevery();
         delivery.setAddress(member.getAddress());
 
 
@@ -49,14 +53,15 @@ public class OrderService {
     //의 비즈니스 로직을 처리하는 것을 트랜잭션 스크립트 패턴(http://martinfowler.com/eaaCatalog/
     //transactionScript.html)이라 한다.
     @Transactional
-    public void cancelOrder(Long orderId){
+    public void cancelOrder(Long orderId) {
         Order order = orderRepository.findOne(orderId);
         order.cancel();
     }
 
-//    public List<Order> findOrders(OrderSearch orderSearch){
-//        return orderRepository.findAll(orderSearch);
-//    }
+    public List<Order> findOrders(OrderSearch orderSearch){
+        return orderRepository.findAllByString(orderSearch);
+    }
+
 
 
 }
