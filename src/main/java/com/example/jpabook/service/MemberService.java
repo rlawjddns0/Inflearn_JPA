@@ -49,4 +49,10 @@ public class MemberService {
         return memberRepository.find(memberId);
     }
 
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.find(id);//영속상태로 만들어준다.
+        member.setUsername(name);//변경감지
+
+    }
 }
