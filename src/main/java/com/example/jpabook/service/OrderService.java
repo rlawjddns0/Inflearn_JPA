@@ -1,6 +1,6 @@
 package com.example.jpabook.service;
 
-import com.example.jpabook.entity.Delevery;
+import com.example.jpabook.entity.Delivery;
 import com.example.jpabook.entity.Member;
 import com.example.jpabook.entity.Order;
 import com.example.jpabook.entity.OrderItem;
@@ -32,7 +32,7 @@ public class OrderService {
         Member member = memberRepository.find(memberId);
         Item item = itemRepository.findOne(itemId);
 
-        Delevery delivery = new Delevery();
+        Delivery delivery = new Delivery();
         delivery.setAddress(member.getAddress());
 
 

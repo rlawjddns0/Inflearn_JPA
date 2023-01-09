@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +32,9 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
 
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name="DELEVERY_ID")//ONE TO ONE 관계에서는 foreignkey를 둘 중 하나에 둬도 된다. 하지만 정책상 많이 사용하는곳에 둔다.
-    private Delevery delevery;
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="DELIVERY_ID")//ONE TO ONE 관계에서는 foreignkey를 둘 중 하나에 둬도 된다. 하지만 정책상 많이 사용하는곳에 둔다.
+    private Delivery delivery;
 
     private LocalDateTime orderDate;//주문시간
 
@@ -53,16 +52,16 @@ public class Order {
         orderItem.setOrder(this);
     }
 
-    public void setDelivery(Delevery delivery){
-        this.delevery=delivery;
-        delevery.setOrder(this);
+    public void setDelivery(Delivery delivery){
+        this.delivery =delivery;
+        this.delivery.setOrder(this);
     }
 
     //==생성 메서드==//
-    public static Order createOrder(Member member, Delevery delevery, OrderItem... orderItems){
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems){
         Order order = new Order();
         order.setMember(member);
-        order.setDelevery(delevery);
+        order.setDelivery(delivery);
         for (OrderItem orderItem :orderItems) {
             order.addOrderItem(orderItem);
         }
@@ -74,7 +73,7 @@ public class Order {
     //==비즈니스 로직==//
     /** 주문 취소 **/
     public void cancel(){
-        if(delevery.getStatus()==DeliverStatus.COMP){
+        if(delivery.getStatus()==DeliverStatus.COMP){
             throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
         }
 
