@@ -24,6 +24,11 @@ public class OrderRepository {
         return em.find(Order.class,id);
     }
 
+    public List<Order> findAll() {
+        TypedQuery<Order> query = em.createQuery("select * from Order o", Order.class);
+        return query.getResultList();
+    }
+
     public List<Order> findAllByString(OrderSearch orderSearch) {
         //language=JPAQL
         String jpql = "select o From Order o join o.member m";

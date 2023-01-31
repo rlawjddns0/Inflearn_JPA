@@ -1,6 +1,7 @@
 package com.example.jpabook.entity;
 
 import com.example.jpabook.embedded.Address;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Delivery {
 
 
     @OneToOne(mappedBy = "delivery", fetch = LAZY)
+    @JsonIgnore
     private Order order;
 
     @Embedded

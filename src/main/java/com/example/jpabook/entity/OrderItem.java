@@ -1,6 +1,7 @@
 package com.example.jpabook.entity;
 
 import com.example.jpabook.entity.item.Item;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "ORDER_ID")
+    @JsonIgnore
     private Order order;//주문
 
     private int orderPrice;//주문가격
