@@ -9,13 +9,13 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 @Data
-public class Delevery {
+public class Delivery {
     @Id @GeneratedValue
-    @Column(name="DELEVERY_ID")
+    @Column(name="DELIVERY_ID")
     private Long id;
 
 
-    @OneToOne(mappedBy = "delevery", fetch = LAZY)
+    @OneToOne(mappedBy = "delivery", fetch = LAZY)
     private Order order;
 
     @Embedded
