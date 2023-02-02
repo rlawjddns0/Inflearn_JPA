@@ -24,6 +24,15 @@ public class OrderRepository {
         return em.find(Order.class,id);
     }
 
+    //실제 sql처럼 한번 가져올떄 조인을 걸어서 한번에 다 가져온다.
+    public List<Order> findAllWithMemberDeliver(){
+        return  em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class
+        ).getResultList();
+    }
+
     public List<Order> findAll() {
         TypedQuery<Order> query = em.createQuery("select * from Order o", Order.class);
         return query.getResultList();
