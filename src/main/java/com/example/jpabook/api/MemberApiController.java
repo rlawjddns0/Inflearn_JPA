@@ -61,6 +61,11 @@ public class MemberApiController {
 
     }
 
+    @GetMapping("/api/v11/members")
+    public List<Member> membersV11(@RequestParam(value = "name") String name){
+        return memberService.findByName(name);
+    }
+
     @Data
     @AllArgsConstructor
     static class Result<T>{

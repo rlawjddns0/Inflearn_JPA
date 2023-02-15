@@ -2,6 +2,7 @@ package com.example.jpabook.service;
 
 import com.example.jpabook.entity.Member;
 import com.example.jpabook.repository.MemberRepository;
+import com.example.jpabook.repository.MemberRepository2;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;//변경될 일 없기 때문에 final 키워드 사용
+    private final MemberRepository2 memberRepository2;
 //     롬복 RequiredArgsConstructor 사용 해서 생략
 //    @Autowired
 //    public MemberService(MemberRepository memberRepository){
@@ -54,5 +56,9 @@ public class MemberService {
         Member member = memberRepository.find(id);//영속상태로 만들어준다.
         member.setUsername(name);//변경감지
 
+    }
+
+    public List<Member> findByName(String name){
+        return memberRepository2.findByusername(name);
     }
 }
